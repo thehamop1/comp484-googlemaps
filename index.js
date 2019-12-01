@@ -1,3 +1,44 @@
+class mapPoint{
+    constructor(y, x){
+        this.x = x;
+        this.y = y;
+    }
+}
+class boundingBox{
+    constructor(topLeft, topRight, bottomLeft, bottomRight){
+        this.topLeft = topLeft;
+        this.topRight = topRight;
+        this.bottomLeft = bottomLeft;
+        this.bottomRight = bottomRight;
+    }
+}
+
+
+
+var csunBuildingCoordinates = [
+    ['Jacaranda', new boundingBox(new mapPoint(34.242050, -118.529434), new mapPoint(34.242166, -118.527793), new mapPoint(34.241009, -118.529523), new mapPoint(34.241036, -118.527805))],
+    ['Redwood', new boundingBox(new mapPoint(34.242623, -118.527026), new mapPoint(34.242574, -118.525358), new mapPoint(34.241315, -118.526826), new mapPoint(34.241359, -118.525351))],
+    ['Jerome Richfield', new boundingBox(new mapPoint(34.242464, -118.531112), new mapPoint(34.242442, -118.529827), new mapPoint(34.241591, -118.530970), new mapPoint(34.241613, -118.529822))]
+];
+function drawBounds(buildingCoordinates, map){
+    buildingCoordinates.forEach(function(building, index){
+        var rectangle = new google.maps.Rectangle({
+            strokeColor: '#FF0000',
+            strokeOpacity: 0.8,
+            strokeWeight: 2,
+            fillColor: '#FF0000',
+            fillOpacity: 0.35,
+            map: map,
+            bounds: {
+                north: building[1].topLeft.y,
+                south: building[1].bottomLeft.y,
+                east: building[1].topRight.x,
+                west: building[1].topLeft.x
+            }
+        });
+        console.log(building[1]);
+    });
+}
 var map;
 var styles = {
     default: null,
@@ -10,7 +51,7 @@ var styles = {
             stylers: [{color: '#003f5c'}]
         },
         {
-            featureType: 'poi',
+            featureType: 'POI',
             elementType: 'geometry',
             stylers: [{color: '#003f5c'}]
         },
@@ -58,4 +99,26 @@ function initMap() {
         disableDefaultUI: true
     });
     map.setOptions({styles: styles['hide']});
+    map.addListener('click', function(e) {
+        console.log(e.qa);
+    });
+
+    csunBuildingCoordinates.forEach(function(building, index){
+        var rectangle = [];
+        rectangle.push(new google.maps.Rectangle({
+            strokeColor: '#FF0000',
+            strokeOpacity: 0.8,
+            strokeWeight: 2,
+            fillColor: '#FF0000',
+            fillOpacity: 0.35,
+            map: map,
+            bounds: {
+                north: building[1].topLeft.y,
+                south: building[1].bottomLeft.y,
+                east: building[1].topRight.x,
+                west: building[1].topLeft.x
+            }
+        }));
+    });
+    //drawBounds(csunBuildingCoordinates, map);
 }
