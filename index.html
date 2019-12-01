@@ -4,17 +4,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Timed Typing Test App</title>
+    <title>Google Maps Quiz</title>
     <script src="index.js" async></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB1kzHBDOI5KB4PmIIS6PQVlhOQj5TCtwk&callback=initMap" async defer></script>
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-    <header class="masthead">
-        <h1>Google Maps Quiz</h1>
-    </header>
+    <!-- <header>
+         <h1>Google Maps Quiz</h1>
+         </header> -->
     <main class="main">
+        <div class="questions">
+        </div>
+        <div id="map" class="map">
+        </div>
     </main>
 </body>
-
 </html>
