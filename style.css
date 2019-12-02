@@ -7,6 +7,7 @@ header{
     display: flex;
     height: 10vw;
     justify-content: center;
+    align-items: center;
     background-color: #472b62;
 }
 .main{
@@ -21,4 +22,27 @@ header{
     width:75vw;
     height:100vh;
     background-color: #003f5c;
+}
+.questionArea{
+    height: 80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-content: flex-end;
+    align-items: center;
+}
+#startButton{
+    background-color: #4CAF50; /* Green */
+    border: none;
+    color: white;
+    padding: 4%;
+    width: 50%;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 1.3rem;
+}
+#question{
+    font-size: 3rem;
+    text-align: center;
 }
