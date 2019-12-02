@@ -13,12 +13,13 @@ class boundingBox{
     }
 }
 
-
-
 var csunBuildingCoordinates = [
     ['Jacaranda', new boundingBox(new mapPoint(34.242050, -118.529434), new mapPoint(34.242166, -118.527793), new mapPoint(34.241009, -118.529523), new mapPoint(34.241036, -118.527805))],
     ['Redwood', new boundingBox(new mapPoint(34.242623, -118.527026), new mapPoint(34.242574, -118.525358), new mapPoint(34.241315, -118.526826), new mapPoint(34.241359, -118.525351))],
-    ['Jerome Richfield', new boundingBox(new mapPoint(34.242464, -118.531112), new mapPoint(34.242442, -118.529827), new mapPoint(34.241591, -118.530970), new mapPoint(34.241613, -118.529822))]
+    ['College of Business and Economics', new boundingBox(new mapPoint(34.242464, -118.531112), new mapPoint(34.242442, -118.529827), new mapPoint(34.241591, -118.530970), new mapPoint(34.241613, -118.529822))],
+    ['Michael D. Eisner College of Education', new boundingBox(new mapPoint(34.241541, -118.531428), new mapPoint(34.241554, -118.530459), new mapPoint(34.241115, -118.531425), new mapPoint(34.241115, -118.530379))],
+    ['Sequoia Hall - College of Health & Human Development', new boundingBox(new mapPoint(34.240811, -118.528451), new mapPoint(34.240830, -118.527667), new mapPoint(34.240147, -118.528444), new mapPoint(34.240147, -118.527559))],
+    ['Admissions and Records', new boundingBox(new mapPoint(34.240716, -118.531477), new mapPoint(34.240740, -118.530157), new mapPoint(34.239937, -118.531413), new mapPoint(34.239964, -118.530154))]
 ];
 function drawBounds(buildingCoordinates, map){
     buildingCoordinates.forEach(function(building, index){
