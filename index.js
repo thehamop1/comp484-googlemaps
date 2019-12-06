@@ -76,6 +76,11 @@ var styles = {
     ]
 };
 var map;
+var startButton = document.getElementById("startButton");
+var question = document.getElementById("question");
+var wrongAnswers = 0;
+var correctAnswers = 0;
+var gQuestionNumber;
 function initMap() {
     map = new google.maps.Map(document.getElementById('map'), {
         center: {lat: 34.239645, lng: -118.528184},
@@ -86,11 +91,31 @@ function initMap() {
     });
     map.setOptions({styles: styles['hide']});
     map.addListener('click', function(e) {
-        console.log(e.qa);
+        checkQuestion(e.latLng);
         nextQuestion();
     });
 
-    csunBuildingCoordinates.forEach(function(building, index){
+    // drawBounds(csunBuildingCoordinates,map);
+}
+function checkQuestion(coordinates){
+    var buildingCoordinates = csunBuildingCoordinates[gQuestionNumber][1];
+    var upperXBound = buildingCoordinates.topRight.x;
+    var lowerXBound = buildingCoordinates.topLeft.x;
+    var upperYBound = buildingCoordinates.topLeft.y;
+    var lowerYBound = buildingCoordinates.bottomLeft.y;
+    if(coordinates.lng()<upperXBound && coordinates.lng()>lowerXBound){
+        if(coordinates.lat()<upperYBound && coordinates.lat()>lowerYBound){
+            correctAnswers++;
+            console.log("correct");
+            return;
+        }
+    }
+    wrongAnswers++;
+    console.log("incorrect");
+}
+
+function drawBounds(buildingCoordinates, map){
+    buildingCoordinates.forEach(function(building, index){
         var rectangle = [];
         rectangle.push(new google.maps.Rectangle({
             strokeColor: '#FF0000',
@@ -109,36 +134,13 @@ function initMap() {
     });
 }
 
-function drawBounds(buildingCoordinates, map){
-    buildingCoordinates.forEach(function(building, index){
-        var rectangle = new google.maps.Rectangle({
-            strokeColor: '#FF0000',
-            strokeOpacity: 0.8,
-            strokeWeight: 2,
-            fillColor: '#FF0000',
-            fillOpacity: 0.35,
-            map: map,
-            bounds: {
-                north: building[1].topLeft.y,
-                south: building[1].bottomLeft.y,
-                east: building[1].topRight.x,
-                west: building[1].topLeft.x
-            }
-        });
-        console.log(building[1]);
-    });
-}
 function nextQuestion(){
     var questionNumber = Math.floor(Math.random()*csunBuildingCoordinates.length);
-    console.log(questionNumber);
     question.innerHTML = "Please click on " + csunBuildingCoordinates[questionNumber][0];
+    gQuestionNumber = questionNumber;
 }
 function startQuiz(){
     startButton.remove();
     nextQuestion();
 }
-var startButton = document.getElementById("startButton");
-var question = document.getElementById("question");
-var wrongAnswers = 0;
-var correctAnswers = 0;
-startButton.addEventListener("click", startQuiz)
+startButton.addEventListener("click", startQuiz);
