@@ -80,6 +80,8 @@ var startButton = document.getElementById("startButton");
 var question = document.getElementById("question");
 var wrongAnswers = 0;
 var correctAnswers = 0;
+var questionsAsked = [];
+var numQuestionsAsked = 0;
 var gQuestionNumber;
 function initMap() {
     map = new google.maps.Map(document.getElementById('map'), {
@@ -105,36 +107,59 @@ function checkQuestion(coordinates){
     var lowerYBound = buildingCoordinates.bottomLeft.y;
     if(coordinates.lng()<upperXBound && coordinates.lng()>lowerXBound){
         if(coordinates.lat()<upperYBound && coordinates.lat()>lowerYBound){
-            correctAnswers++;
-            console.log("correct");
+            questionsAsked.push([gQuestionNumber, true]);
             return;
         }
     }
-    wrongAnswers++;
-    console.log("incorrect");
+    questionsAsked.push([gQuestionNumber, false]);
 }
 
-function drawBounds(buildingCoordinates, map){
-    buildingCoordinates.forEach(function(building, index){
+function drawBounds(){
+    csunBuildingCoordinates.forEach(function(building, index){
         var rectangle = [];
-        rectangle.push(new google.maps.Rectangle({
-            strokeColor: '#FF0000',
-            strokeOpacity: 0.8,
-            strokeWeight: 2,
-            fillColor: '#FF0000',
-            fillOpacity: 0.35,
-            map: map,
-            bounds: {
-                north: building[1].topLeft.y,
-                south: building[1].bottomLeft.y,
-                east: building[1].topRight.x,
-                west: building[1].topLeft.x
+        var writeBox = false;
+        var questionResult;
+        for(var x=0;x<questionsAsked.length;++x){
+            if(questionsAsked[x][0] == index){
+                writeBox = true;
+                questionResult = x;
             }
-        }));
+        }
+        if(writeBox){
+            rectangle.push(new google.maps.Rectangle({
+                strokeColor: questionsAsked[questionResult][1]?"green":'#FF0000',
+                strokeOpacity: 0.8,
+                strokeWeight: 2,
+                fillColor: questionsAsked[questionResult][1]?"green":'#FF0000',
+                fillOpacity: 0.35,
+                map: map,
+                bounds: {
+                    north: building[1].topLeft.y,
+                    south: building[1].bottomLeft.y,
+                    east: building[1].topRight.x,
+                    west: building[1].topLeft.x
+                }
+            }));
+        }
     });
 }
-
+function calculateTotal(){
+    for(var x=0;x<questionsAsked.length;++x){
+        if(questionsAsked[x][1] == true){
+            correctAnswers++;
+        }else{
+            wrongAnswers++;
+        }
+    }
+    question.innerHTML = "Correct Answers: " + correctAnswers.toString() + "<br/>" + "Wrong Answers: " + wrongAnswers.toString();
+}
 function nextQuestion(){
+    numQuestionsAsked++;
+    if(numQuestionsAsked>5){
+        calculateTotal();
+        drawBounds();
+        return;
+    }
     var questionNumber = Math.floor(Math.random()*csunBuildingCoordinates.length);
     question.innerHTML = "Please click on " + csunBuildingCoordinates[questionNumber][0];
     gQuestionNumber = questionNumber;
